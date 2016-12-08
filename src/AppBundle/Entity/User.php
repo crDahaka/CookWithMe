@@ -5,44 +5,40 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="users")
+ * @UniqueEntity(fields="email", message="This email address is already in use")
  */
 class User implements UserInterface
 {
     /**
+     * @ORM\Id;
      * @ORM\Column(type="integer")
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
-     * @Assert\NotBlank(message="Username cannot be blank.")
-     * @Assert\Length(
-     *     min=3,
-     *     max=25,
-     *     minMessage="Username cannot be less than 3 characters.",
-     *     maxMessage="Username cannot be more than 25 characters."
-     * )
+     * @ORM\Column(type="string", length=255, unique=true)
      */
-    protected $username;
+    protected $email;
+
+    /**
+     * @ORM\Column(type="string", length=40)
+     */
+    protected $name;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(message="Invalid first name.")
      */
-    protected $firstName;
+    protected $role;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(message="Invalid last name.")
+     * @Assert\Length(max=4096)
      */
-    protected $lastName;
-
+    protected $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=64)
@@ -50,30 +46,15 @@ class User implements UserInterface
     protected $password;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
+     * @ORM\Column(type="string", length=10, nullable=true)
      */
-    protected $plainPassword;
-
-    /**
-     * @ORM\Column(type="string", length=50, unique=true)
-     * @Assert\Email(message="Invalid email address.")
-     */
-    protected $email;
+    protected $salt;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
      */
     protected $isActive = 1;
 
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
-    protected $salt;
-
-    public function __construct()
-    {
-    }
 
     /**
      * @return int
@@ -83,52 +64,24 @@ class User implements UserInterface
     }
 
     /**
-     * @param int $id
-     */
-    public function setId($id){
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getUsername(){
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     */
-    public function setUsername($username){
-        $this->username = $username;
+        return $this->email;
     }
 
     /**
      * @return string
      */
-    public function getFirstName(){
-        return $this->firstName;
+    public function getName(){
+        return $this->name;
     }
 
     /**
-     * @param string $firstName
+     * @param string $name
      */
-    public function setFirstName($firstName){
-        $this->firstName = $firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName(){
-        return $this->lastName;
-    }
-
-    /**
-     * @param string $lastName
-     */
-    public function setLastName($lastName){
-        $this->lastName = $lastName;
+    public function setName($name){
+        $this->name = $name;
     }
 
     /**
@@ -167,10 +120,31 @@ class User implements UserInterface
     }
 
     /**
-     * @param string $password
+     * @param string $plainPassword
      */
-    public function setPlainPassword($password){
-        $this->plainPassword = $password;
+    public function setPlainPassword($plainPassword){
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole(){
+        return $this->role;
+    }
+
+    /**
+     * @param string $role
+     */
+    public function setRole($role = null){
+        $this->role = $role;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles(){
+        return [$this->getRole()];
     }
 
     /**
@@ -190,19 +164,8 @@ class User implements UserInterface
     /**
      * @return array
      */
-    public function getRoles(){
-        return array('ROLE_USER');
-    }
-
-    /**
-     * @return array
-     */
     public function getSalt(){
         return $this->salt;
-    }
-
-    public function setSalt(){
-        $this->salt = $this->generateSalt();
     }
 
     /**
@@ -210,11 +173,14 @@ class User implements UserInterface
      */
     private function generateSalt(){
         $generatedSalt = uniqid($this->getUsername(), $more_entropy = true);
-
         return $generatedSalt;
     }
 
-    public function eraseCredentials(){
+    public function setSalt(){
+        $this->salt = $this->generateSalt();
     }
 
+    public function eraseCredentials(){
+        return null;
+    }
 }

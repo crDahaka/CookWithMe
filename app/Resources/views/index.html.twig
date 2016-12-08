@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Hello from the Index page!</h1>
+        <div><a href="{{ path('login') }}">Go to login</a></div>
+        <div><a href="{{ path('user_registration') }}">Register</a></div>
+    </div>
+
+{% endblock %}

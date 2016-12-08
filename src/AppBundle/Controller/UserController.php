@@ -8,10 +8,11 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\UserType;
+use AppBundle\Form\RegistrationType;
 use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,27 +27,28 @@ class UserController extends Controller
     public function registerAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-
+        $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $password = $this->get('security.password_encoder')
-                ->encodePassword($user, $user->getPlainPassword());
+            $encoder = $this->get('security.password_encoder');
+            $password = $encoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
+
+            $user->setRole('ROLE_USER');
             $user->setSalt();
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('login');
         }
 
-        return $this->render(
-            'register.html.twig',
-            array('form' => $form->createView())
-        );
+        return $this->render('authentication/register.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
 }
