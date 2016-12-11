@@ -7,5 +7,22 @@
         <div><a href="{{ path('login') }}">Go to login</a></div>
         <div><a href="{{ path('user_registration') }}">Register</a></div>
     </div>
-
+    <br>
+    <div class="container">
+        <h1>Users</h1>
+        <table class="table">
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td>Email</td>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
