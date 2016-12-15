@@ -48,6 +48,14 @@ class Recipe
     protected $isPublic;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Image(
+     *     mimeTypes = {"image/jpeg", "image/jpg", "image/png"}
+     * )
+     */
+    protected $image;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      */
     protected $user;
@@ -64,6 +72,8 @@ class Recipe
     protected $ingredients;
 
     public function __construct(){
+        $this->createdAt = new \DateTime();
+        $this->isPublic = false;
         $this->comments = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
     }
@@ -179,5 +189,23 @@ class Recipe
     public function setComments($comments){
         $this->comments = $comments;
     }
+
+    /**
+     * @return string
+     */
+    public function getImage(){
+        return $this->image;
+    }
+
+    /**
+     * @param $image
+     * @return $this
+     */
+    public function setImage($image){
+        $this->image = $image;
+
+        return $this;
+    }
+
 
 }
