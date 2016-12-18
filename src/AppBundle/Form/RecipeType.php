@@ -8,6 +8,8 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,7 +33,10 @@ class RecipeType extends AbstractType
         $builder
             ->add('title', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
             ->add('preparation', TextareaType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
-            ->add('image', FileType::class, array('label' => 'Upload Image'))
+            ->add('category', EntityType::class, array(
+                'class' => 'AppBundle\Entity\Category', 'choice_label' => 'name'))
+           // ->add('ingredients', CollectionType::class, array('entry_type' => IngredientType::class, 'allow_add' => true))
+            ->add('image', FileType::class, array('label' => 'Upload Image', 'attr' => array('style' => 'margin-bottom:15px')))
             ->add('save', SubmitType::class, array('label' => 'Create Recipe', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')));
     }
 

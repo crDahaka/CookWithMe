@@ -56,6 +56,12 @@ class Recipe
     protected $image;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    protected $category;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      */
     protected $user;
@@ -207,5 +213,18 @@ class Recipe
         return $this;
     }
 
+    /**
+     * @return Category
+     */
+    public function getCategory(){
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function setCategory(Category $category){
+        $this->category = $category;
+    }
 
 }
