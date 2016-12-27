@@ -8,6 +8,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Recipe;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,6 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RecipeType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -31,13 +33,32 @@ class RecipeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options){
 
         $builder
-            ->add('title', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
-            ->add('preparation', TextareaType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
+            ->add('ingredients', CollectionType::class, array(
+                'label' => 'Съставки:',
+                'entry_type' => IngredientType::class,
+                'allow_add' => true,
+                'by_reference' => false))
+
+            ->add('title', TextType::class, array(
+                'label' => 'Заглавие:',
+                'attr' => ['class' => 'form-control']))
+
+            ->add('preparation', TextareaType::class, array(
+                'label' => 'Приготвяне:',
+                'attr' => ['class' => 'form-control']))
+
             ->add('category', EntityType::class, array(
+                'attr' => ['class' => 'form-control'],
+                'label' => 'Категория:',
                 'class' => 'AppBundle\Entity\Category', 'choice_label' => 'name'))
-           // ->add('ingredients', CollectionType::class, array('entry_type' => IngredientType::class, 'allow_add' => true))
-            ->add('image', FileType::class, array('label' => 'Upload Image', 'attr' => array('style' => 'margin-bottom:15px')))
-            ->add('save', SubmitType::class, array('label' => 'Create Recipe', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')));
+
+            ->add('image', FileType::class, array(
+                'attr' => ['class' => 'btn btn-default btn-file'],
+                'label' => 'Избери снимка:'))
+
+            ->add('save', SubmitType::class, array(
+                'label' => 'Създай рецепта',
+                'attr' => ['class' => 'btn btn-primary']));
     }
 
     /**
@@ -46,7 +67,7 @@ class RecipeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver){
 
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Recipe',
+            'data_class' => Recipe::class,
         ));
     }
 

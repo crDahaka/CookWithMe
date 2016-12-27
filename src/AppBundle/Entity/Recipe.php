@@ -72,7 +72,7 @@ class Recipe
     protected $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="recipes")
+     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="recipes", cascade={"persist"})
      * @ORM\JoinColumn(name="recipes_ingredients")
      */
     protected $ingredients;
@@ -158,7 +158,14 @@ class Recipe
      * @param Ingredient $ingredient
      */
     public function addIngredient(Ingredient $ingredient){
-        $this->ingredients[] = $ingredient;
+        $this->ingredients->add($ingredient);
+    }
+
+    /**
+     * @param Ingredient $ingredient
+     */
+    public function removeIngredient(Ingredient $ingredient){
+        $this->ingredients->removeElement($ingredient);
     }
 
     /**

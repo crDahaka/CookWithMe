@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% set recipe = recipe %}
+
+    <div class="row">
+        <h2 class="page-header">Title: {{ recipe.title }}</h2>
+
+    </div>
+
+    <div class="col-md-5"><h3>Ingredients:</h3>
+        {% for ingredient in recipe.ingredients %}
+
+            <div>{{ ingredient.name }}</div>
+
+        {% endfor %}
+        <br>
+    </div>
+    <div class="col-md-8"><h3>Preparation</h3>
+        <div>{{ recipe.preparation }}</div>
+        <div>{{ recipe.createdAt|date('F j, Y, g:i a') }}</div>
+    </div>
+
+    <div class="col-md-6"><h3>Comments</h3>
+        {% for comment in recipe.comments %}
+            <div>{{ comment.content }}</div>
+        {% endfor %}
+    </div>
+
+    <a class="btn btn-default" href="{{ path('recipes') }}">Back to List</a>
+
+    <img style="width: 200px" src="{{ asset("uploads/" ~ recipe.image) }}" />
+    
+{% endblock %}

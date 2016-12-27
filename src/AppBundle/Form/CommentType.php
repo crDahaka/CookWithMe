@@ -2,26 +2,19 @@
 /**
  * Created by PhpStorm.
  * User: CR
- * Date: 12/15/2016
- * Time: 20:49
+ * Date: 12/20/2016
+ * Time: 11:41
  */
 
 namespace AppBundle\Form;
 
-
-use AppBundle\Entity\Ingredient;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class IngredientType
- * @package AppBundle\Form
- */
-class IngredientType extends AbstractType
+class CommentType extends AbstractType
 {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -29,9 +22,7 @@ class IngredientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options){
 
         $builder
-            ->add('name', TextType::class, array(
-                'label' => 'Име',
-                'attr' => ['class' => 'form-control']));
+            ->add('content', TextareaType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')));
     }
 
     /**
@@ -40,7 +31,7 @@ class IngredientType extends AbstractType
     public function configureOptions(OptionsResolver $resolver){
 
         $resolver->setDefaults(array(
-            'data_class' => Ingredient::class,
+            'data_class' => 'AppBundle\Entity\Comment',
         ));
     }
 

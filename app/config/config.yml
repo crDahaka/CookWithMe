@@ -7,7 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    images: '%kernel.root_dir%/../app/Resources/images'
+    uploads_directory: '%kernel.root_dir%/../web/uploads'
 
 framework:
     #esi:             ~
@@ -63,7 +63,7 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
-# Swiftmailer Configuration
+# SwiftMailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
     host:      "%mailer_host%"

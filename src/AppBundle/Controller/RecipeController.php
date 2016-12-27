@@ -8,25 +8,33 @@
 
 namespace AppBundle\Controller;
 
-
-use AppBundle\Entity\Ingredient;
 use AppBundle\Entity\Recipe;
 use AppBundle\Form\RecipeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+/**
+ * Class RecipeController
+ * @package AppBundle\Controller
+ */
 class RecipeController extends Controller
 {
     /**
      * @Route("/", name="recipes")
+     * @Method("GET")
+     * @param $request
+     * @return FormView
      */
     public function index(Request $request){
 
         $recipes = $this->getDoctrine()
             ->getRepository('AppBundle:Recipe')
-            ->findAll();
+            ->findBy(array(), array('createdAt' => 'DESC'), 6);
+
 
         return $this->render('::index.html.twig', array(
             'recipes' => $recipes
@@ -35,6 +43,9 @@ class RecipeController extends Controller
 
     /**
      * @Route("/recipe/create", name="recipe_create")
+     * @Method({"GET", "POST"})
+     * @param $request
+     * @return RedirectResponse
      */
     public function createAction(Request $request){
 
@@ -45,11 +56,10 @@ class RecipeController extends Controller
         if ($form->isSubmitted() && $form->isValid()){
 
             $file = $recipe->getImage();
-
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
             $file->move(
-                $this->getParameter('images'),
+                $this->getParameter('uploads_directory'),
                 $fileName
             );
 
@@ -68,6 +78,24 @@ class RecipeController extends Controller
         return $this->render('recipes/create.html.twig', array(
             'form' => $form->createView()
         ));
+    }
+
+    /**
+     * @Route("/recipe/details/{id}", name="recipe_details")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param int $id
+     * @return FormView
+     */
+    public function detailsAction(Request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+        $recipe = $em->getRepository('AppBundle:Recipe')->find($id);
+
+        return $this->render('recipes/details.html.twig', array(
+            'recipe' => $recipe
+        ));
+
     }
 
 }

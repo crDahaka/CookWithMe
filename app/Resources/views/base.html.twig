@@ -10,13 +10,15 @@
     <title>{% block title %}Cook With Me!{% endblock %}</title>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-inverse">
+<nav class="navbar">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -25,16 +27,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Cook With Me</a>
+            <a class="navbar-brand" href="{{ path('recipes') }}">Cook With Me</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Home</a></li>
-                <li><a href="/recipe/create">Add Recipe</a></li>
+                <li><a href="/recipe/create">Добави Рецепта</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="" href="{{ path('login') }}">Login</a></li>
-                <li><a class="" href="{{ path('user_registration') }}">Register</a></li>
+                <li><a class="" href="{{ path('login') }}">Логин</a></li>
+                <li><a class="" href="{{ path('user_registration') }}">Регистрация</a></li>
             </ul>
         </div>
     </div>
@@ -50,7 +52,11 @@
 
     </div>
 
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        <script src="{{ asset('js/ingredientCreate.js') }}"></script>
+    {% endblock %}
 
 </body>
+
+<footer class="footer">&copy 2016 Cook With Me, Inc. All Rights Reserved. </footer>
 </html>

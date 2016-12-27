@@ -1,5 +1,4 @@
 .idea
-/app/Resources/images
 
 # Cache and logs (Symfony2)
 /app/cache/*
@@ -33,6 +32,7 @@
 # Assets and user uploads
 /web/bundles/
 /web/uploads/
+/web/public
 
 # Assets managed by Bower
 /web/assets/vendor/

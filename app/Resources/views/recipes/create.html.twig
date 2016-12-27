@@ -2,9 +2,10 @@
 
 {% block body %}
 
-    <h2 class="page-header">Add new recipe</h2>
+    <h2 class="page-header">Добавяне на рецепта</h2>
 
     {{ form_start(form) }}
+    <ul class="ingredients" data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e }}"></ul>
     {{ form_widget(form) }}
     {{ form_end(form) }}
 

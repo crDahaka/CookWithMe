@@ -65,6 +65,13 @@ class Comment
     }
 
     /**
+     * @return User
+     */
+    public function getUser(){
+        return $this->user;
+    }
+
+    /**
      * @return Recipe
      */
     public function getRecipe(){

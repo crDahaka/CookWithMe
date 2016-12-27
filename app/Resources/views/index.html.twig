@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2 class="page-header">Top Recipes</h2>
+    <h2 class="page-header">Recently Added</h2>
     <div class="row">
         {% for recipe in recipes %}
             <div class="col-md-4">
                 <h3>{{ recipe.title }}</h3>
                 <p>Created at: {{ recipe.createdAt|date('F j, Y, g:i a') }}</p>
-                <img src="{{ recipe.image }}">
-                <p><a class="btn btn-default" href="#">Details</a></p>
+                <p><a class="btn btn-default" href="{{ path('recipe_details', {'id': recipe.id}) }}">Details</a></p>
             </div>
         {% endfor %}
     </div>
