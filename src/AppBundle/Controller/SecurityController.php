@@ -45,8 +45,9 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/logout", name="logout")
+     * @Route("logout", name="logout")
      */
     public function logoutAction(){
+        return $this->redirect($this->generateUrl('recipes'));
     }
 }

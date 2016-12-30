@@ -35,10 +35,14 @@ class RecipeController extends Controller
             ->getRepository('AppBundle:Recipe')
             ->findBy(array(), array('createdAt' => 'DESC'), 6);
 
-
-        return $this->render('::index.html.twig', array(
+        $response =  $this->render('::index.html.twig', array(
             'recipes' => $recipes
         ));
+
+        $response->setSharedMaxAge(3600);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+
+        return $response;
     }
 
     /**

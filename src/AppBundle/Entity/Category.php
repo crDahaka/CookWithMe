@@ -32,7 +32,7 @@ class Category
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Recipe", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Recipe", mappedBy="category", fetch="EXTRA_LAZY")
      */
     protected $recipes;
 

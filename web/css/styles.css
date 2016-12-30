@@ -10,7 +10,7 @@ li * {
 }
 
 #recipe_image{
-    display: none;
+    margin-bottom: 15px;
 }
 
 #recipe_ingredients{
@@ -25,4 +25,17 @@ footer{
     padding: 1rem;
     background-color: #efefef;
     text-align: center;
+}
+
+img{
+    width: 300px;
+    height: 200px;
+}
+
+.navbar-collapse{
+    background-color: #efefef;
+}
+
+.navbar-header{
+    padding-left: 15px;
 }

@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% if app.user %}
+        <div><a href="/recipe/create"><h3>Create new Recipe!</h3></a></div>
+    {% endif %}
     <h2 class="page-header">Recently Added</h2>
     <div class="row">
         {% for recipe in recipes %}
             <div class="col-md-4">
                 <h3>{{ recipe.title }}</h3>
-                <p>Created at: {{ recipe.createdAt|date('F j, Y, g:i a') }}</p>
-                <p><a class="btn btn-default" href="{{ path('recipe_details', {'id': recipe.id}) }}">Details</a></p>
+                <a href="{{ path('recipe_details', {'id': recipe.id}) }}">
+                    <img class="img-thumbnail" src="{{ asset("uploads/" ~ recipe.image) }}">
+                </a>
             </div>
         {% endfor %}
     </div>

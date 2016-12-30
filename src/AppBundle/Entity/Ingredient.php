@@ -31,7 +31,7 @@ class Ingredient
     protected $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="ingredients")
+     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="ingredients", fetch="EXTRA_LAZY")
      */
     protected $recipes;
 

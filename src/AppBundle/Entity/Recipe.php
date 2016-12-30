@@ -67,13 +67,13 @@ class Recipe
     protected $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="recipe")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="recipe", fetch="EXTRA_LAZY")
      */
     protected $comments;
 
     /**
      * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="recipes", cascade={"persist"})
-     * @ORM\JoinColumn(name="recipes_ingredients")
+     * @ORM\JoinColumn(name="recipes_ingredients", nullable=false)
      */
     protected $ingredients;
 

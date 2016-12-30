@@ -2,11 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: CR
- * Date: 12/14/2016
- * Time: 14:47
+ * Date: 12/28/2016
+ * Time: 19:43
  */
 
 namespace AppBundle\Form;
+
 
 use AppBundle\Entity\Recipe;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,11 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class RecipeType
- * @package AppBundle\Form
- */
-class RecipeType extends AbstractType
+class DetailsType extends AbstractType
 {
 
     /**
@@ -46,13 +43,12 @@ class RecipeType extends AbstractType
                 'label' => 'Приготвяне:',
                 'attr' => ['class' => 'form-control']))
 
-            ->add('category', EntityType::class, array(
-                'attr' => ['class' => 'form-control'],
-                'label' => 'Категория:',
-                'class' => 'AppBundle\Entity\Category', 'choice_label' => 'name'))
-
             ->add('image', FileType::class, array(
-                'label' => 'Избери снимка:'));
+                'label' => 'Избери снимка:'))
+
+            ->add('comments', TextareaType::class, array(
+                'label' => 'Post Comment:'
+            ));
     }
 
     /**
