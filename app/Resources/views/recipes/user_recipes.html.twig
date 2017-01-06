@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2 class="page-header">List of your recipes:</h2>
+
+    <div class="row">
+
+        {% for recipe in recipes %}
+
+            {% if app.user == recipe.user %}
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ path('recipe_details', {'id': recipe.id}) }}"><h4>{{ recipe.title }}</h4></a>
+                    </li>
+                </ol>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

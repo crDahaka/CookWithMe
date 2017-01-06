@@ -1,0 +1,15 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+    <h2 class="page-header">Редактиране на Рецепта</h2>
+
+    {{ form_start(editForm) }}
+        <ul class="ingredients" data-prototype="{{ form_widget(editForm.ingredients.vars.prototype)|e }}"></ul>
+    {{ form_widget(editForm) }}
+    {{ recipe.image }}
+
+    <input type="submit" value="Edit"
+           class="btn btn-primary">
+    {{ form_end(editForm) }}
+{% endblock %}

@@ -12,7 +12,6 @@ use AppBundle\Form\RegistrationType;
 use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -39,9 +38,9 @@ class UserController extends Controller
             $user->setRole('ROLE_USER');
             $user->setSalt();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             return $this->redirectToRoute('login');
         }

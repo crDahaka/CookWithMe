@@ -26,5 +26,8 @@
     <hr>
     <a class="btn btn-default" href="{{ path('recipes') }}">Back to List</a>
 
+    {#{% if app.user == recipe.user %}#}
+        {#<a class="btn btn-default" href="{{ path('recipe_edit', {'id': recipe.id}) }}">Edit</a>#}
+    {#{% endif %}#}
     
 {% endblock %}

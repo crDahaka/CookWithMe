@@ -18,7 +18,7 @@ li * {
 }
 
 footer{
-    position: absolute;
+    position: static;
     right: 0;
     bottom: 0;
     left: 0;
@@ -30,6 +30,7 @@ footer{
 img{
     width: 300px;
     height: 200px;
+    margin-top: 15px;
 }
 
 .navbar-collapse{
@@ -38,4 +39,23 @@ img{
 
 .navbar-header{
     padding-left: 15px;
+}
+
+.page-header{
+    text-align: center;
+    background-color: #ffffff;
+    font-family: 'Comic Sans MS', sans-serif;
+    font-size: 40px;
+    font-weight: normal;
+    line-height: 48px;
+    margin: 0;
+}
+
+.ingredients{
+    margin-left: 50px;
+
+}
+
+.add_ingredient_link{
+    margin-top: 20px;
 }

@@ -10,7 +10,6 @@ namespace AppBundle\Security;
 
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -28,7 +27,15 @@ use Symfony\Component\Security\Core\Security;
  */
 class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 {
+
+    /**
+     * @var RouterInterface
+     */
     private $router;
+
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $encoder;
 
     /**
@@ -58,6 +65,11 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         ];
     }
 
+    /**
+     * @param array $credentials
+     * @param UserProviderInterface $userProvider
+     * @return UserInterface
+     */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $email = $credentials['email'];
@@ -65,6 +77,11 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         return $userProvider->loadUserByUsername($email);
     }
 
+    /**
+     * @param array $credentials
+     * @param UserInterface $user
+     * @return bool
+     */
     public function checkCredentials($credentials, UserInterface $user)
     {
         $plainPassword = $credentials['password'];
@@ -75,6 +92,12 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         throw new BadCredentialsException();
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $providerKey
+     * @return RedirectResponse
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $url = $this->router->generate('recipes');
@@ -82,6 +105,11 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($url);
     }
 
+    /**
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return RedirectResponse
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);

@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="recipes")
+ * @ORM\HasLifecycleCallbacks
  */
 class Recipe
 {
@@ -32,7 +33,7 @@ class Recipe
     protected $title;
 
     /**
-     * @ORM\Column(type="text", length=250)
+     * @ORM\Column(type="text", length=1000)
      * @Assert\NotBlank(message="Preparation cannot be blank.")
      */
     protected $preparation;

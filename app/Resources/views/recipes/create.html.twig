@@ -4,12 +4,14 @@
 
     <h2 class="page-header">Добавяне на рецепта</h2>
 
-    {{ form_start(form) }}
-    <ul class="ingredients" data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e }}"></ul>
-    {{ form_widget(form) }}
+    {{ form_start(createForm) }}
+        <ul class="ingredients" data-prototype="{{ form_widget(createForm.ingredients.vars.prototype)|e }}"></ul>
+    {{ form_widget(createForm) }}
 
     <input type="submit" value="Създай рецепта"
             class="btn btn-primary">
-    {{ form_end(form) }}
+    {{ form_end(createForm) }}
+
+
 
 {% endblock %}

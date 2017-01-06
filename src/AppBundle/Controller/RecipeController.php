@@ -26,10 +26,8 @@ class RecipeController extends Controller
     /**
      * @Route("/", name="recipes")
      * @Method("GET")
-     * @param $request
-     * @return FormView
      */
-    public function index(Request $request){
+    public function listAction(){
 
         $recipes = $this->getDoctrine()
             ->getRepository('AppBundle:Recipe')
@@ -46,6 +44,26 @@ class RecipeController extends Controller
     }
 
     /**
+     * @Route("/user/recipes", name="user_recipes")
+     * @Method("GET")
+     */
+    public function showUserRecipesAction(){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $recipes = $entityManager->getRepository('AppBundle:Recipe')->findAll();
+
+        $response = $this->render('recipes/user_recipes.html.twig', array(
+            'recipes' => $recipes,
+        ));
+
+        $response->setSharedMaxAge(3600);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+
+        return $response;
+
+    }
+
+    /**
      * @Route("/recipe/create", name="recipe_create")
      * @Method({"GET", "POST"})
      * @param $request
@@ -53,53 +71,94 @@ class RecipeController extends Controller
      */
     public function createAction(Request $request){
 
+        $entityManager = $this->getDoctrine()->getManager();
+
         $recipe = new Recipe();
-        $form = $this->createForm(RecipeType::class, $recipe);
-        $form->handleRequest($request);
+        $createForm = $this->createForm(RecipeType::class, $recipe);
+        $createForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($createForm->isSubmitted() && $createForm->isValid()){
 
-            $file = $recipe->getImage();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $image = $createForm->getData()->getImage();
+            $imageName = $this->get('app.image_uploader')->upload($image);
 
-            $file->move(
-                $this->getParameter('uploads_directory'),
-                $fileName
-            );
-
-            $recipe->setImage($fileName);
+            $recipe->setImage($imageName);
 
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $recipe->setUser($user);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($recipe);
-            $em->flush();
+            $entityManager->persist($recipe);
+            $entityManager->flush();
 
             return $this->redirect($this->generateUrl('recipes'));
         }
 
         return $this->render('recipes/create.html.twig', array(
-            'form' => $form->createView()
+            'createForm' => $createForm->createView()
         ));
     }
 
     /**
      * @Route("/recipe/details/{id}", name="recipe_details")
      * @Method({"GET", "POST"})
-     * @param Request $request
      * @param int $id
      * @return FormView
      */
-    public function detailsAction(Request $request, $id){
+    public function detailsAction($id){
 
-        $em = $this->getDoctrine()->getManager();
-        $recipe = $em->getRepository('AppBundle:Recipe')->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $recipe = $entityManager->getRepository('AppBundle:Recipe')->find($id);
+
+        if (!$recipe){
+            throw $this->createNotFoundException('Recipe not found with id '. $id);
+        }
 
         return $this->render('recipes/details.html.twig', array(
             'recipe' => $recipe
         ));
 
+    }
+
+    /**
+     * @Route("/recipe/edit/{id}", name="recipe_edit")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function editAction(Request $request, $id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $recipe = $entityManager->getRepository('AppBundle:Recipe')->find($id);
+
+        if (!$recipe){
+            throw $this->createNotFoundException('Recipe not found with id '. $id);
+        }
+
+        $editForm = $this->createForm(RecipeType::class, $recipe);
+        $editForm->handleRequest($request);
+
+        $image = $recipe->getImage();
+
+        if ($editForm->isSubmitted() && $editForm->isValid()){
+
+            if ($editForm->get('image')->getData() !== null){
+
+                $imageName = $this->get('app.image_uploader')->upload($image);
+                $recipe->setImage($imageName);
+
+            }
+
+            $entityManager->persist($recipe);
+            $entityManager->flush();
+
+            return $this->redirect($this->generateUrl('recipes'));
+        }
+
+        return $this->render('recipes/edit.html.twig', array(
+            "recipe" => $recipe,
+            "editForm" => $editForm->createView(),
+        ));
     }
 
 }

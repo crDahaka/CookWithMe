@@ -1,16 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+    <h1 class="page-header">Welcome to Cook With Me!</h1>
+
     {% if app.user %}
-        <div><a href="/recipe/create"><h3>Create new Recipe!</h3></a></div>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="{{ path('recipe_create') }}">Create own recipe!</a></li>
+            <li class="list-group-item"><a href="{{ path('user_recipes') }}">Your Recipes</a></li>
+        </ul>
     {% endif %}
-    <h2 class="page-header">Recently Added</h2>
     <div class="row">
         {% for recipe in recipes %}
             <div class="col-md-4">
                 <h3>{{ recipe.title }}</h3>
                 <a href="{{ path('recipe_details', {'id': recipe.id}) }}">
-                    <img class="img-thumbnail" src="{{ asset("uploads/" ~ recipe.image) }}">
+                    <img class="img-thumbnail img-responsive" src="{{ asset("uploads/" ~ recipe.image) }}">
                 </a>
             </div>
         {% endfor %}

@@ -7,3 +7,7 @@ services:
     app.form_login_authenticator:
         class: AppBundle\Security\FormLoginAuthenticator
         arguments: ["@router", "@security.password_encoder"]
+
+    app.image_uploader:
+        class: AppBundle\Services\FileUploader
+        arguments: ['%uploads_directory%']
